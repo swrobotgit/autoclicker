@@ -5,10 +5,11 @@ import time
 # Создаем окно
 window = Tk()
 window.title('SW Autoclicker')
-window.geometry('300x50')  # Устанавливаем размер окна 300x50 пикселей
+window.geometry('300x100')  # Устанавливаем размер окна 300x50 пикселей
 window.wm_attributes('-topmost', True)
 
 status = 0
+speed_click = 1
 # Функция для автоклика
 def click_start():
     global  status
@@ -22,13 +23,18 @@ def click_start():
         #pyautogui.tripleClick()  # Выполняем тройной клик мышью
         pyautogui.doubleClick() # Выполняем тройной клик мышью
         window.update()  # Обновляем окно
-        time.sleep(1)  # Ждем 1 секунду между кликами
+        time.sleep(speed_click)  # Ждем N-секунд
+        print(speed_click)
 
 def click_stop():
     global status
     status = 0
     label_status['text'] = 'не работает'
     label_status['fg'] = 'red'
+
+def speed_update():
+    global speed_click
+    speed_click =int(ent.get())
 
 # Создаем кнопку Start
 button = Button(window, text='Start', command=click_start)
@@ -42,5 +48,10 @@ Label(window, text='Статус:').grid(row=1, column=0)
 label_status =Label(window, text='не работает', fg='red')
 label_status.grid(row=1, column=1)
 
+Label(window, text='Устновить скорость, сек:').grid(row=2, column=0, columnspan=3)
+ent = Entry(window)
+ent.grid(row=3, column=0, columnspan=2)
+button = Button(window, text='up', command=speed_update)
+button.grid(row=3, column=2)
 
 window.mainloop()
